@@ -52,7 +52,7 @@ class Cli():
     def _show_recover_image(self, recover_image):
         self._show_image(recover_image, title='res', threshold=True)
 
-    def run(self):
+    def recover(self):
         dark_channel = self.haze_removal.get_dark_channel(self.haze_removal.I)
         A = self.haze_removal.get_atmosphere(dark_channel)
         print('atmosphere value: {}'.format(A))

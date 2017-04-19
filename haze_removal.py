@@ -17,7 +17,6 @@ class HazeRemovel():
         self.omega = omega
         self.percentage = percentage
         self.tmin = tmin
-        self.pad_width = number_to_integral(local_patch_size / 2)
         self.image_name = image
         try:
             image_path = os.path.join('images', image)
@@ -32,18 +31,11 @@ class HazeRemovel():
             raise FileNotFoundError('\'{}\' not found'.format(image))
 
     def get_dark_channel(self, image):
-        padded_image = np.pad(
-            image,
-            ((self.pad_width, self.pad_width),
-             (self.pad_width, self.pad_width),
-             (0, 0)), 'edge'
+        kernel = cv2.getStructuringElement(
+            cv2.MORPH_RECT,
+            (self.local_patch_size, self.local_patch_size)
         )
-        dark_channel = np.zeros((self.height, self.width))
-        for i, j in np.ndindex(dark_channel.shape):
-            dark_channel[i, j] = padded_image[
-                i: i + self.local_patch_size,
-                j: j + self.local_patch_size, :
-            ].min()
+        dark_channel = cv2.erode(image.min(axis=2), kernel).astype(np.uint8)
         return dark_channel
 
     def get_atmosphere(self, dark_channel):
@@ -55,7 +47,8 @@ class HazeRemovel():
         return np.max(flat_image.take(search_idx, axis=0), axis=0)
 
     def get_transmission(self, dark_channel, A):
-        transmission = 1 - self.omega * self.get_dark_channel(self.I / A)
+        transmission = 1 - self.omega * \
+            self.get_dark_channel(self.I / A * 255) / 255
         transmission = np.maximum(transmission, self.tmin)
         if self.refine:
             transmission = self.get_refined_transmission(transmission)
