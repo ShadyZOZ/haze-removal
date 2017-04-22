@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>暗通道图片除雾在线演示</title>
+
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+
+    <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/js/bootstrap.min.js" type="text/javascript"></script>
+</head>
+
+<body>
+
+    <h1 style="text-align: center; margin-bottom: 40px;">暗通道图片除雾在线演示</h1>
+
+    <div class="container" style="margin-bottom: 40px;">
+        <div class="row" style="margin-bottom: 20px;">
+            <div class="col-sm-12 col-md-12" style="margin-bottom: 20px;">
+                <a class="btn btn-primary" type="button" href="{{ url_for('index') }}">再次选择图片</a>
+                <p>总耗时：{{ total_time | round(4) }}s</p>
+            </div>
+            <div class="col-sm-12 col-md-12" style="margin-bottom: 20px;">
+                <p>大气光值 <small>计算耗时：{{ a_time | round(4) }}s</small></p>
+                <p>{{ atmosphere }}</p>
+            </div>
+            <div class="col-sm-12 col-md-6">
+                <p>暗通道图 <small>计算耗时：{{ dark_time | round(4) }}s</small></p>
+                <img class="img-responsive" src="{{ image_dark }}">
+            </div>
+            <div class="col-sm-12 col-md-6">
+                <p>透射图 <small>计算耗时：{{ t_time | round(4) }}s</small></p>
+                <img class="img-responsive" src="{{ image_t }}">
+            </div>
+        </div>
+        <div class="row" style="margin-bottom: 20px;">
+            <div class="col-sm-12 col-md-6">
+                <p>除雾图 <small>计算耗时：{{ res_time | round(4) }}s</small></p>
+                <img class="img-responsive" src="{{ image_recover }}">
+            </div>
+            <div class="col-sm-12 col-md-6">
+                <p>原图</p>
+                <img class="img-responsive" src="{{ image_org }}">
+            </div>
+        </div>
+    </div>
+</body>
+
+<script>
+
+</script>
+
+</html>
