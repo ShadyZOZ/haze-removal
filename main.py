@@ -10,7 +10,7 @@ from utils import threshold_color_array
 class Cli():
 
     def __init__(self, image='ny1.bmp', refine=True, w=15,  omega=0.95,
-                 p=0.001, tmin=0.1, save=False):
+                 p=0.001, tmin=0.1, mean=False, save=False):
         if not isinstance(refine, bool):
             raise ValueError('invalid \'refine\' value')
         self.haze_removal = HazeRemovel(
@@ -20,6 +20,7 @@ class Cli():
             omega=omega,
             percentage=p,
             tmin=tmin,
+            mean=mean,
         )
         self.save = save
 

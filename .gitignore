@@ -92,3 +92,4 @@ ENV/
 results/
 .vscode
 uploads/
+.idea
