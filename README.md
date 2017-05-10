@@ -23,6 +23,8 @@ $ python main.py clean
 ## Docker Deploy
 
 ```bash
+$ curl -O http://7vzsal.com1.z0.glb.clouddn.com/dehaze.tar.gz
+$ tar -zxvf dehaze.tar.gz
 $ docker build -t dehaze-server .
 $ docker run -it --rm -p 5000:5000 --name my-dehaze-server dehaze-server
 ```
