@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import os
 import fire
 from PIL import Image
 
@@ -7,9 +8,9 @@ from haze_removal import HazeRemovel
 from utils import threshold_color_array
 
 
-class Cli():
+class Cli:
 
-    def __init__(self, image='ny1.bmp', refine=True, w=15,  omega=0.95,
+    def __init__(self, image='images/ny1.bmp', refine=True, w=15,  omega=0.95,
                  p=0.001, tmin=0.1, mean=False, save=False):
         if not isinstance(refine, bool):
             raise ValueError('invalid \'refine\' value')
@@ -63,6 +64,12 @@ class Cli():
         self._show_dark_channel(dark_channel)
         self._show_transmission(t)
         self._show_recover_image(recover_image)
+
+    def clean(self):
+        with os.scandir(os.path.join(os.getcwd(), 'uploads')) as it:
+            for entry in it:
+                if entry.is_file():
+                    os.remove(entry)
 
     def _show_image(self, image, title='', threshold=False):
         if threshold:

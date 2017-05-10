@@ -9,9 +9,9 @@ import numpy as np
 from utils import number_to_integral
 
 
-class HazeRemovel():
+class HazeRemovel:
 
-    def __init__(self, image='ny1.bmp', refine=True, local_patch_size=15,
+    def __init__(self, image, refine=True, local_patch_size=15,
                  omega=0.95, percentage=0.001, tmin=0.1, mean=False):
         self.refine = refine
         self.local_patch_size = local_patch_size
