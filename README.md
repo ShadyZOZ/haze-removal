@@ -3,10 +3,28 @@ Single Image Haze Removal Using Dark Channel Prior
 
 ## Usages
 
+启动服务
+
 ```bash
-$ python main.py recover
-$ python main.py recover --image gugong.bmp
-$ python main.py recover --image gugong.bmp --save
+$ python server.py
+```
+
+使用CLI
+
+```bash
+# 恢复图片
+$ python main.py recover --image images/gugong.bmp
+# 恢复并保存图片
+$ python main.py recover --image images/gugong.bmp --save
+# 清除用户上传图片
+$ python main.py clean
+```
+
+## Docker Deploy
+
+```bash
+$ docker build -t dehaze-server .
+$ docker run -it --rm -p 5000:5000 --name my-dehaze-server dehaze-server
 ```
 
 ## 展示平台要求
