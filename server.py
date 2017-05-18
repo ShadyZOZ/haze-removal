@@ -60,6 +60,7 @@ def result(image):
             'image_recover': _image_url(image, 'res'),
             'atmosphere': A,
             'total_time': end_time - start_time,
+            'real_time': t5 - t1,
             'dark_time': t2 - t1,
             'a_time': t3 - t2,
             't_time': t4 - t3,

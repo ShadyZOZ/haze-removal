@@ -21,7 +21,8 @@
         <div class="row" style="margin-bottom: 20px;">
             <div class="col-sm-12 col-md-12" style="margin-bottom: 20px;">
                 <a class="btn btn-primary" type="button" href="{{ url_for('index') }}">再次选择图片</a>
-                <p>总耗时：{{ total_time | round(4) }}s</p>
+                <br>
+                <p>总耗时：{{ total_time | round(4) }}s (计算耗时：{{ real_time | round(4) }}s)</p>
             </div>
             <div class="col-sm-12 col-md-12" style="margin-bottom: 20px;">
                 <p>大气光值 <small>计算耗时：{{ a_time | round(4) }}s</small></p>
