@@ -18,6 +18,8 @@ $ python main.py recover --image images/gugong.bmp
 $ python main.py recover --image images/gugong.bmp --save
 # 清除用户上传图片
 $ python main.py clean
+# benchmark
+$ python main.py benchmark --tries 10 --image images/forest1.jpg
 ```
 
 ## Docker Deploy

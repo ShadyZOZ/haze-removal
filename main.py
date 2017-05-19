@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
 import os
+import time
+
 import fire
 from PIL import Image
 
@@ -64,6 +66,31 @@ class Cli:
         self._show_dark_channel(dark_channel)
         self._show_transmission(t)
         self._show_recover_image(recover_image)
+
+    def benchmark(self, tries=5):
+
+        def run_once():
+            start = time.time()
+            dark_channel = self.haze_removal.get_dark_channel(
+                self.haze_removal.I)
+            A = self.haze_removal.get_atmosphere(dark_channel)
+            t = self.haze_removal.get_transmission(dark_channel, A)
+            self.haze_removal.get_recover_image(A, t)
+            end = time.time()
+            return end - start
+
+        time_cost_list = []
+        for i in range(tries):
+            time_cost = run_once()
+            time_cost_list.append(time_cost)
+
+        avg_time = sum(time_cost_list) / tries
+        min_time = min(time_cost_list)
+        max_time = max(time_cost_list)
+        print(
+            '平均耗时: %.4fs 最短耗时: %.4fs 最长耗时: %.4fs' %
+            (avg_time, min_time, max_time)
+        )
 
     def clean(self):
         with os.scandir(os.path.join(os.getcwd(), 'uploads')) as it:
