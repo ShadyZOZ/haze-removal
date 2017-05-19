@@ -13,7 +13,7 @@ from utils import threshold_color_array
 class Cli:
 
     def __init__(self, image='images/ny1.bmp', refine=True, w=15,  omega=0.95,
-                 p=0.001, tmin=0.1, mean=False, save=False):
+                 p=0.001, tmin=0.1, mean=False, save=False, tries=10):
         if not isinstance(refine, bool):
             raise ValueError('invalid \'refine\' value')
         self.haze_removal = HazeRemovel(
@@ -26,6 +26,7 @@ class Cli:
             mean=mean,
         )
         self.save = save
+        self.tries = tries
 
     def show_image(self):
         self._show_image(self.haze_removal.image, title='org')
@@ -67,7 +68,7 @@ class Cli:
         self._show_transmission(t)
         self._show_recover_image(recover_image)
 
-    def benchmark(self, tries=5):
+    def benchmark(self):
 
         def run_once():
             start = time.time()
@@ -80,11 +81,11 @@ class Cli:
             return end - start
 
         time_cost_list = []
-        for i in range(tries):
+        for i in range(self.tries):
             time_cost = run_once()
             time_cost_list.append(time_cost)
 
-        avg_time = sum(time_cost_list) / tries
+        avg_time = sum(time_cost_list) / self.tries
         min_time = min(time_cost_list)
         max_time = max(time_cost_list)
         print(
