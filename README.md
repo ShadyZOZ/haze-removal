@@ -31,5 +31,12 @@ $ docker build -t dehaze-server .
 $ docker run -it --rm -p 5000:5000 --name my-dehaze-server dehaze-server
 ```
 
+## Install
+
+```bash
+$ pip install -r requirements.txt
+$ python server.py
+```
+
 ## 展示平台要求
 运行中间结果　＋　除雾后的图

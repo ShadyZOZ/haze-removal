@@ -12,13 +12,12 @@ from utils import number_to_integral
 class HazeRemovel:
 
     def __init__(self, image, refine=True, local_patch_size=15,
-                 omega=0.95, percentage=0.001, tmin=0.1, mean=False):
+                 omega=0.95, percentage=0.001, tmin=0.1):
         self.refine = refine
         self.local_patch_size = local_patch_size
         self.omega = omega
         self.percentage = percentage
         self.tmin = tmin
-        self.mean = mean
         self.image_name = image.split('/')[1]
         if os.path.isfile(image):
             image = Image.open(image)
@@ -43,16 +42,12 @@ class HazeRemovel:
         flat_dark = dark_channel.ravel()
         pixel_count = number_to_integral(img_size * self.percentage)
         search_idx = flat_dark.argsort()[-pixel_count:]
-        if self.mean:
-            a = np.mean(flat_image.take(search_idx, axis=0), axis=0)
-        else:
-            a = np.max(flat_image.take(search_idx, axis=0), axis=0)
-        return a
+        a = np.mean(flat_image.take(search_idx, axis=0), axis=0)
+        return a.astype(np.uint8)
 
     def get_transmission(self, dark_channel, A):
         transmission = 1 - self.omega * \
             self.get_dark_channel(self.I / A * 255.0) / 255.0
-        transmission = np.maximum(transmission, self.tmin)
         if self.refine:
             transmission = self.get_refined_transmission(transmission)
         return transmission
@@ -60,10 +55,11 @@ class HazeRemovel:
     def get_refined_transmission(self, transmission):
         gray = self.image.min(axis=2)
         t = (transmission * 255).astype(np.uint8)
-        refined_transmission = cv2.ximgproc.guidedFilter(gray, t, 40, 1e-3)
+        refined_transmission = cv2.ximgproc.guidedFilter(gray, t, 40, 1e-2)
         return refined_transmission / 255
 
     def get_recover_image(self, A, transmission):
+        t = np.maximum(transmission, self.tmin)
         tiled_t = np.zeros_like(self.I)
-        tiled_t[:, :, 0] = tiled_t[:, :, 1] = tiled_t[:, :, 2] = transmission
+        tiled_t[:, :, 0] = tiled_t[:, :, 1] = tiled_t[:, :, 2] = t
         return (self.I - A) / tiled_t + A
